@@ -30,5 +30,10 @@
         value="{{course.img}}" required>
   </div>
   <input name="id" type="hidden" value={{course.id}}>
-  <button type="submit" class="btn btn-primary">Сохранить</button>
+  <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
+</form>
+
+<form action="/courses/remove" method="post">
+  <input type="hidden" name="id" value={{course.id}}>
+  <button type="submit" class="btn btn-danger">Удалить курс</button>
 </form>

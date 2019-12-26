@@ -1,0 +1,25 @@
+<h1>Мои заказы</h1>
+
+{{#if order}}
+{{#each order}}
+    <div class="card text-center mb-3">
+        <div class="card-header">
+            Заказ № "{{_id}}"
+        </div>
+        <div class="card-body">
+            <div class="card-title date">{{date}}</div>
+            <div class="card-title">{{user.name}}</div>
+            <ul class="list-group list-group-flush">
+                {{#each courses}}
+                    <li class="list-group-item">
+                        {{course.title}} (x<strong>{{count}}</strong>) - <span class="price">{{course.price}}</span>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="card-footer text-muted price">
+            {{price}}
+        </div>
+    </div>
+{{/each}}
+{{/if}}

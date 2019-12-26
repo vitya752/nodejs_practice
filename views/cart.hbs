@@ -2,7 +2,7 @@
 
 <div id="cart">
 {{#if courses}}
-    <table class="table">
+    <table class="table text-center">
         <thead>
             <tr>
                 <th>Название</th>
@@ -25,7 +25,12 @@
         </tbody>
     </table>
 
-    <p class="total">Price: <span>{{price}}</span></p>
+    <p class="text-right total">Price: <span class="price">{{price}}</span></p>
+
+    <form action="/orders" method="POST" class="order-form text-right">
+        <button type="submit" class="btn btn-primary">Оформить заказ</button>
+    </form>
+
 {{else}}
     <p>Вы еще ничего не добавили в корзину...</p>
 {{/if}}

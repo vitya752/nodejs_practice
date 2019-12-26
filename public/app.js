@@ -1,11 +1,30 @@
-// document.querySelectorAll('.price').forEach(item => {
-//     item.textContent = new Intl.NumberFormat('ru-RU', {
-//         currency: 'rub',
-//         style: 'currency'
-//     }).format(item.textNode)
-// })
+const priceFormat = (price) => {
+    return new Intl.NumberFormat('ru-RU', {
+        currency: 'rub',
+        style: 'currency'
+    }).format(price)
+};
 
-const cart = document.getElementById("cart");
+document.querySelectorAll('.price').forEach(item => {
+    item.textContent = priceFormat(item.textContent);
+});
+
+const toDate = date => {
+    return new Intl.DateTimeFormat('ru-RU', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).format(new Date(date))
+}
+
+document.querySelectorAll('.date').forEach(item => {
+    item.textContent = toDate(item.textContent)
+})
+
+const cart = document.querySelector("#cart");
 if(cart) {
     cart.addEventListener('click', (event) => {
         if(event.target.classList.contains('remove-course')) {
@@ -30,14 +49,16 @@ if(cart) {
                         `
                     });
                     document.querySelector('table tbody').innerHTML = result;
-                    document.querySelector('.total span').innerHTML = cart.price;
+                    document.querySelector('.price').textContent = priceFormat(cart.price)
                 }else{
                     document.querySelector('table').outerHTML = `
                         <p>Вы еще ничего не добавили в корзину...</p>
                     `;
-                    document.querySelector('.total').remove()
+                    document.querySelector('.total').remove();
+                    document.querySelector('.order-form').remove()
                 }
             })
+            .then(priceFormat())
         }
     })
 }
