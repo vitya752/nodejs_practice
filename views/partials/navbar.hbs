@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
     <a class="navbar-brand" href="/">Node.js</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav ml-auto">
@@ -8,15 +8,24 @@
             <li class="nav-item {{#if isCourses}}active{{/if}}">
                 <a class="nav-link" href="/courses">Курсы</a>
             </li>
-            <li class="nav-item {{#if isAdd}}active{{/if}}">
-                <a class="nav-link" href="/add">Добавить курс</a>
-            </li>
-            <li class="nav-item {{#if isCart}}active{{/if}}">
-                <a class="nav-link" href="/cart">Корзина</a>
-            </li>
-            <li class="nav-item {{#if isOrders}}active{{/if}}">
-                <a class="nav-link" href="/orders">Заказы</a>
-            </li>
+            {{#if isAuth}}
+                <li class="nav-item {{#if isAdd}}active{{/if}}">
+                    <a class="nav-link" href="/add">Добавить курс</a>
+                </li>
+                <li class="nav-item {{#if isCart}}active{{/if}}">
+                    <a class="nav-link" href="/cart">Корзина</a>
+                </li>
+                <li class="nav-item {{#if isOrders}}active{{/if}}">
+                    <a class="nav-link" href="/orders">Заказы</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">Выйти</a>
+                </li>
+            {{else}}
+                <li class="nav-item {{#if isLogin}}active{{/if}}">
+                    <a class="nav-link" href="/auth/login">Войти</a>
+                </li>
+            {{/if}}
         </ul>
     </div>
 </nav>

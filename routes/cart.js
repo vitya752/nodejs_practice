@@ -1,5 +1,5 @@
 const Course = require('./../models/course');
-const path = require('path');
+const auth = require('./../middleware/auth');
 const {Router} = require('express');
 
 const router = Router();
@@ -20,13 +20,13 @@ const computePrice = (courses) => {
     }, 0);
 }
 
-router.post('/add', async (req, res) => {
+router.post('/add', auth, async (req, res) => {
     const course = await Course.findById(req.body.id);
     await req.user.addToCart(course);
     res.redirect('/cart');
 });
 
-router.delete('/remove/:id', async (req, res) => {
+router.delete('/remove/:id', auth, async (req, res) => {
     await req.user.removeFromCart(req.params.id); //удаляем нужный нам id, и сохраняем результат в этой функции
     const user = await req.user
         .populate('cart.items.courseId')
@@ -42,7 +42,7 @@ router.delete('/remove/:id', async (req, res) => {
 });
 
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const user = await req.user
         .populate('cart.items.courseId')
         .execPopulate();

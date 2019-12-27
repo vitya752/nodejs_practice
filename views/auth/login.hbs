@@ -1,0 +1,76 @@
+<div class="tabs-content-wrap">
+
+    {{#if error}}
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {{/if}}
+
+    <div>
+        <div class="nav nav-tabs nav-tabs--custom" role="tablist">
+            <li class="tab nav-item nav-link active w-50 text-center" data-toggle="tab" role="tab">Логин</li>
+            <li class="tab nav-item nav-link w-50 text-center" data-toggle="tab" role="tab">Регистрация</li>
+        </div>
+    </div>
+    <div class="tab-content tab-content--custom">
+        <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-home-tab">
+            <form action="/auth/login" method="POST">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input 
+                        type="text" 
+                        name="email"
+                        id="email" 
+                        class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password"
+                        class="form-control" required>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csrf}}">
+                <button type="submit" class="btn btn-primary mb-3">Войти</button>
+            </form>
+        </div>
+        <div class="tab-pane fade show" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <form action="/auth/register" method="POST">
+                <div class="form-group">
+                    <label for="rlogin">Логин</label>
+                    <input 
+                        id="rlogin"
+                        type="text" 
+                        name="rlogin" 
+                        class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="remail">Email</label>
+                    <input 
+                        id="remail"
+                        type="email" 
+                        name="remail" 
+                        class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="rpassword">Пароль</label>
+                    <input 
+                        id="rpassword"
+                        type="password" 
+                        name="rpassword" 
+                        class="form-control" required>
+                <div class="form-group">
+                    <label for="rpassword">Повторите пароль</label>
+                    <input 
+                        id="rpassword2"
+                        type="password" 
+                        name="rpassword2" 
+                        class="form-control" required>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csrf}}">
+                <button type="submit" class="btn btn-primary mb-3">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>

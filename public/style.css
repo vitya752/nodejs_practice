@@ -1,0 +1,12 @@
+.nav-tabs--custom li{
+    cursor: pointer;
+}
+
+.tab-content--custom{
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #fff #dee2e6 #dee2e6 #dee2e6;
+}
