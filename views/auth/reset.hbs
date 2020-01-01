@@ -1,0 +1,21 @@
+<div class="reset-wrap">
+
+    {{#if error}}
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {{/if}}
+
+    <form action="/auth/reset" method="POST">
+        <div class="form-group">
+            <label for="email">Ваш email</label>
+            <input 
+                type="email" 
+                name="email" 
+                id="email"
+                class="form-control" required>
+        </div>
+        <input type="hidden" name="_csrf" value="{{csrf}}">
+        <button type="submit" class="btn btn-primary mb-3">Сбросить</button>
+    </form>
+</div>

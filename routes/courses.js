@@ -4,6 +4,12 @@ const auth = require('./../middleware/auth');
 
 const router = Router();
 
+const myCourse = (course, req) => {
+    if(course.userId.toString() !== req.user._id) {
+        return false;
+    } else return true;
+}
+
 router.get('/', async (req, res) => {
     const courses = await Course.find().populate('userId', 'name');
     //populate позволяет обратится к коллекции users по id
@@ -11,7 +17,16 @@ router.get('/', async (req, res) => {
     res.render('courses', {
         title: 'Курсы',
         isCourses: true,
-        courses
+        courses: courses.map(item => {
+                    if(req.user) {
+                        if(item.userId._id.toString() === req.user._id.toString()) {
+                            return {
+                                ...item._doc,
+                                canEdit: true
+                            };
+                        } else return item;
+                    } else return item;
+                })
     });
 });
 
@@ -26,6 +41,9 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/edit', auth, async (req, res) => {
     const course = await Course.findById(req.params.id);
+    if(!myCourse(course, req)) {
+        return res.redirect('/');
+    }
     if(!req.query.allow) return res.redirect('/');
     res.render('edit', {
         title: `Редактировать курс ${course.title}`,
@@ -35,6 +53,9 @@ router.get('/:id/edit', auth, async (req, res) => {
 });
 
 router.post('/edit', auth, async (req, res) => {
+    if(!myCourse(course, req)) {
+        return res.redirect('/');
+    }
     const {id} = req.body.id;
     delete req.body.id;
     await Course.findByIdAndUpdate(id, req.body);//принимает id, а вторым параметром - объект свойств, которые надо обновить
@@ -43,6 +64,9 @@ router.post('/edit', auth, async (req, res) => {
 });
 
 router.post('/remove', auth, async (req, res) => {
+    if(!myCourse(course, req)) {
+        return res.redirect('/');
+    }
     try {
         await Course.deleteOne({
             _id: req.body.id
