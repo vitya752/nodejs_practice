@@ -1,10 +1,12 @@
-const express = require('express');
-const exphbs = require('express-handlebars');
-const mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongodb-session')(session);
-const csrf = require('csurf');
-const flash = require('connect-flash');
+const express = require('express');//создание сервера и роуты
+const exphbs = require('express-handlebars');//шаблонизатор html
+const mongoose = require('mongoose');//для связи с базой mongodb
+const session = require('express-session');//для внедрения сессий
+const MongoStore = require('connect-mongodb-session')(session);//сессии с mongodb
+const csrf = require('csurf');//валидация форм, чтобы не подделать форму
+const flash = require('connect-flash');//для вывода ошибок
+const helmet = require('helmet');//меняет заголовки с сервера для безопасности
+const compression = require('compression');
 const homeRoutes = require('./routes/home');
 const coursesRoutes = require('./routes/courses');
 const addRoutes = require('./routes/add');
@@ -31,8 +33,8 @@ const store = new MongoStore({
 });
 
 app.engine('hbs', hbs.engine); //регистрируем в express, что есть такой движок
-app.set('view engine', 'hbs');
-app.set('views', 'views');
+app.set('view engine', 'hbs');//
+app.set('views', 'views');//регистрируем папку views, как папка с шаблонами
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -46,6 +48,8 @@ app.use(session({
 app.use(fileMiddleware.single('avatar'));
 app.use(csrf());
 app.use(flash());
+app.use(helmet());
+app.use(compression());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
