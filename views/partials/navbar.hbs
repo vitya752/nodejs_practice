@@ -9,6 +9,9 @@
                 <a class="nav-link" href="/courses">Курсы</a>
             </li>
             {{#if isAuth}}
+                <li class="nav-item {{#if isProfile}}active{{/if}}">
+                    <a class="nav-link" href="/profile">Профиль</a>
+                </li>
                 <li class="nav-item {{#if isAdd}}active{{/if}}">
                     <a class="nav-link" href="/add">Добавить курс</a>
                 </li>

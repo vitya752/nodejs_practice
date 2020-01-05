@@ -45,7 +45,8 @@
                         id="rlogin"
                         type="text" 
                         name="rlogin" 
-                        class="form-control" required>
+                        class="form-control"
+                        value="{{data.login}}" required>
                 </div>
                 <div class="form-group">
                     <label for="remail">Email</label>
@@ -53,7 +54,8 @@
                         id="remail"
                         type="email" 
                         name="remail" 
-                        class="form-control" required>
+                        class="form-control"
+                        value="{{data.email}}" required>
                 </div>
                 <div class="form-group">
                     <label for="rpassword">Пароль</label>
@@ -62,6 +64,7 @@
                         type="password" 
                         name="rpassword" 
                         class="form-control" required>
+                </div>
                 <div class="form-group">
                     <label for="rpassword">Повторите пароль</label>
                     <input 

@@ -5,7 +5,7 @@ const auth = require('./../middleware/auth');
 const router = Router();
 
 const myCourse = (course, req) => {
-    if(course.userId.toString() !== req.user._id) {
+    if(course.userId.toString() !== req.user._id.toString()) {
         return false;
     } else return true;
 }
@@ -22,6 +22,7 @@ router.get('/', async (req, res) => {
                         if(item.userId._id.toString() === req.user._id.toString()) {
                             return {
                                 ...item._doc,
+                                id: item._id,
                                 canEdit: true
                             };
                         } else return item;
@@ -53,6 +54,7 @@ router.get('/:id/edit', auth, async (req, res) => {
 });
 
 router.post('/edit', auth, async (req, res) => {
+    const course = await Course.findById(req.params.id);
     if(!myCourse(course, req)) {
         return res.redirect('/');
     }
@@ -64,6 +66,7 @@ router.post('/edit', auth, async (req, res) => {
 });
 
 router.post('/remove', auth, async (req, res) => {
+    const course = await Course.findById(req.body.id);
     if(!myCourse(course, req)) {
         return res.redirect('/');
     }

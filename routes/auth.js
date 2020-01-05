@@ -4,6 +4,8 @@ const User = require('./../models/user');
 const nodemailer = require('nodemailer');
 const sendinBlue = require('nodemailer-sendinblue-transport');
 const crypto = require('crypto');
+const {validationResult} = require('express-validator');
+const {registerValidators} = require('./../utils/validators');
 const keys = require('./../keys');
 const regEmail = require('./../emails/registration');
 const resetPass = require('./../emails/reset');
@@ -18,7 +20,7 @@ router.get('/login', async (req, res) => {
         title: 'Авторизация',
         isLogin: true,
         error: req.flash('error')
-    })
+    });
 });
 
 router.get('/logout', async (req, res) => {
@@ -57,31 +59,34 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', registerValidators, async (req, res) => {
     try {
-        const {rlogin, remail, rpassword, rpassword2} = req.body;
-        const candidate = await User.findOne({ email: remail });
-
-        if(candidate) {
-            req.flash('error', "Регистрация: Такой email уже зарегистрирован у нас на сайте");
-            res.redirect('/auth/login');
-        } else {
-            if(rpassword === rpassword2) {
-                const hashPass = await bcrypt.hash(rpassword, 10);
-                const user = await new User({
-                    name: rlogin,
-                    password: hashPass,
+        const {rlogin, remail, rpassword} = req.body;
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            req.flash('error', errors.array()[0].msg);
+            return res.status(422).render('auth/login', {
+                title: "Авторизация",
+                isLogin: true,
+                error: errors.array()[0].msg,
+                data: {
                     email: remail,
-                    cart: {items: []}
-                });
-                await user.save();
-                res.redirect('/auth/login');
-                transporter.sendMail(regEmail(remail));
-            } else {
-                req.flash('error', "Регистрация: Пароли не совпали.");
-                res.redirect('/auth/login');
-            }
+                    login: rlogin
+                }
+            });
         }
+
+        const hashPass = await bcrypt.hash(rpassword, 10);
+        const user = await new User({
+            name: rlogin,
+            password: hashPass,
+            email: remail,
+            cart: {items: []}
+        });
+        await user.save();
+        res.redirect('/auth/login');
+        transporter.sendMail(regEmail(remail));
+
     } catch(e) {
         console.log(e);
     }

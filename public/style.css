@@ -10,3 +10,7 @@
     border-style: solid;
     border-color: #fff #dee2e6 #dee2e6 #dee2e6;
 }
+
+.avatar {
+    max-width: 300px;
+}
